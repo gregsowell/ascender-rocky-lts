@@ -18,7 +18,7 @@
 
     - name: Configure LTS Repo
       ansible.builtin.yum_repository:
-        name: "Rocky {{ lts_version }}"
+        name: "Rocky-{{ lts_version }}"
         description: "Rocky {{ lts_version }} LTS support repo"
         baseurl: https://repo.ciq.co/public/ciq-public-release.rpm
         gpgcheck: false
