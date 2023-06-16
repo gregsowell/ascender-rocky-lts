@@ -20,8 +20,14 @@
       ansible.builtin.dnf:
         name:
           - "https://repo.ciq.co/public/ciq-public-release.rpm"
-          - ciq
         state: present
+
+#    - name: Install required packages
+#      ansible.builtin.dnf:
+#        name:
+#          - "https://repo.ciq.co/public/ciq-public-release.rpm"
+#          - ciq
+#        state: present
 
     - name: Enroll in the CIQ CLI using access key
       ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
