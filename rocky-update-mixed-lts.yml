@@ -15,6 +15,7 @@
   - name: LTS block runs when an LTS version is defined in inventory for a host
     when: hostvars.inventory_hostname.lts_version is defined
     block:
+
     - name: Install required packages
       ansible.builtin.dnf:
         name:
@@ -24,11 +25,11 @@
 
     - name: Enroll in the CIQ CLI using access key
       ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
-	
+
     - name: Enable the subscription
       ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
   ##Block stop
-  
+
   - name: Update all packages on the system
     ansible.builtin.dnf:
       name: "*"
