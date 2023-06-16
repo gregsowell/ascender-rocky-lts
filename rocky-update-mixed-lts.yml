@@ -10,6 +10,8 @@
     # This key should be maintained securely in a vault or securely within Ascender
     mtn_access_key: xzy123
 
+    ciq_cfg_path: /etc/ciq.cfg
+
   tasks:
   - name: Collect what version of linux is currently running
     ansible.builtin.shell: cat /etc/os-release | grep PRETTY_NAME
@@ -19,10 +21,20 @@
   - name: Display the os_version for each server
     ansible.builtin.debug:
       var: os_version_before.stdout
-      
+  
+  - name: Search to see if LTS is already configured
+    when: hostvars[inventory_hostname].lts_version is defined
+    ansible.builtin.lineinfile:
+      path: "{{ ciq_cfg_path }}"
+      line: "{{ lts_version }}"
+      state: present
+    check_mode: yes
+    register: presence
+#    failed_when: presence is changed
+        
   ##Block start
   - name: LTS block runs when an LTS version is defined in inventory for a host
-    when: hostvars[inventory_hostname].lts_version is defined
+    when: hostvars[inventory_hostname].lts_version is defined and presence is not changed
     block:
 
     - name: Install required packages
