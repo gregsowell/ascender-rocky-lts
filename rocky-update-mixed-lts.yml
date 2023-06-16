@@ -3,12 +3,12 @@
   hosts: lts_demo
   gather_facts: false
   vars:
-    #This is the lts version you are locking to
-    #lts_version: lts-8.6
+    # This is the lts version you are locking to
+    # lts_version: lts-8.6
 	
-    #This is the access key created in mountain to authenticate the subscription
-    #This key should be maintained securely in a vault or securely within Ascender
-    #mtn_access_key: xzy123
+    # This is the access key created in mountain to authenticate the subscription
+    # This key should be maintained securely in a vault or securely within Ascender
+    mtn_access_key: xzy123
 	
   tasks:
   ##Block start
