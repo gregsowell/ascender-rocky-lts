@@ -17,7 +17,7 @@
     block:
     - name: Install required packages
       ansible.builtin.dnf:
-	    name:
+        name:
           - https://repo.ciq.co/public/ciq-public-release.rpm
           - ciq
         state: present
