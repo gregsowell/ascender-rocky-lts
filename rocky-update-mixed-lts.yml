@@ -36,7 +36,7 @@
         
   ##Block start
   - name: LTS block runs when an LTS version is defined in inventory for a host
-    when: hostvars[inventory_hostname].lts_version is defined and presence.changed is true
+    when: hostvars[inventory_hostname].lts_version is defined and presence.changed is false
     block:
 
     - name: Install required packages
