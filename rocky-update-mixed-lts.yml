@@ -16,18 +16,19 @@
     when: hostvars[inventory_hostname].lts_version is defined
     block:
 
+    - name: Configure LTS Repo
+      ansible.builtin.yum_repository:
+        name: "Rocky {{ lts_version }}"
+        description: "Rocky {{ lts_version }} LTS support repo"
+        baseurl: https://repo.ciq.co/public/ciq-public-release.rpm
+        gpgcheck: false
+
     - name: Install required packages
       ansible.builtin.dnf:
         name:
-          - "https://repo.ciq.co/public/ciq-public-release.rpm"
-        state: present
-
-#    - name: Install required packages
-#      ansible.builtin.dnf:
-#        name:
 #          - "https://repo.ciq.co/public/ciq-public-release.rpm"
-#          - ciq
-#        state: present
+          - ciq
+        state: present
 
     - name: Enroll in the CIQ CLI using access key
       ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
@@ -36,7 +37,7 @@
       ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
   ##Block stop
 
-  - name: Update all packages on the system
-    ansible.builtin.dnf:
-      name: "*"
-      state: latest
+#  - name: Update all packages on the system
+#    ansible.builtin.dnf:
+#      name: "*"
+#      state: latest
