@@ -35,7 +35,7 @@
 #    failed_when: presence is changed
         
   ##Block start
-  - name: LTS block runs when an LTS version is defined in inventory for a host
+  - name: LTS block runs when an LTS version is defined in inventory for a host and it's not already configured
     when: hostvars[inventory_hostname].lts_version is defined and presence.changed is false
     block:
 
