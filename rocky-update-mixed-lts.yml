@@ -1,0 +1,35 @@
+---
+- name: Perform package update with LTS support
+  hosts: lts_demo
+  gather_facts: false
+  vars:
+    #This is the lts version you are locking to
+    #lts_version: lts-8.6
+	
+	#This is the access key created in mountain to authenticate the subscription
+	#This key should be maintained securely in a vault or securely within Ascender
+	ciq_access_key: xzy123
+	
+  tasks:
+  ##Block start
+  - name: LTS block runs when an LTS version is defined in inventory for a host
+    when: hostvars.inventory_hostname.lts_version is defined
+    block:
+    - name: Install required packages
+      ansible.builtin.dnf:
+	    name:
+          - https://repo.ciq.co/public/ciq-public-release.rpm
+          - ciq
+        state: present
+
+    - name: Enroll in the CIQ CLI using access key
+      ansible.builtin.shell: "ciq enroll --access-key {{ ciq_access_key }}"
+	
+    - name: Enable the subscription
+      ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
+  ##Block stop
+  
+  - name: Update all packages on the system
+    ansible.builtin.dnf:
+      name: "*"
+      state: latest
