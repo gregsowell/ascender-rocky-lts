@@ -26,8 +26,10 @@
     when: hostvars[inventory_hostname].lts_version is defined
     ansible.builtin.lineinfile:
       path: "{{ ciq_cfg_path }}"
-      line: "{{ lts_version }}"
-      state: present
+      #line: "{{ lts_version }}"
+      regexp: ".*{{ lts_version }}.*"
+      #state: present
+      state: absent
     check_mode: yes
     register: presence
 #    failed_when: presence is changed
