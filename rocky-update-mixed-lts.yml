@@ -13,6 +13,7 @@
   tasks:
   - name: Collect what version of linux is currently running
     ansible.builtin.shell: cat /etc/os-release | grep PRETTY_NAME
+    changed_when: false
     register: os_version_before
     
   - name: Display the os_version for each server
@@ -51,6 +52,7 @@
 
   - name: Collect what version of linux is currently running
     ansible.builtin.shell: cat /etc/os-release | grep PRETTY_NAME
+    changed_when: false
     register: os_version_after
     
   - name: Display the os_version for each server
