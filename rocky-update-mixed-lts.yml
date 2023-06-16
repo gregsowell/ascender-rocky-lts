@@ -8,7 +8,7 @@
 	
 	#This is the access key created in mountain to authenticate the subscription
 	#This key should be maintained securely in a vault or securely within Ascender
-	ciq_access_key: xzy123
+	mtn_access_key: xzy123
 	
   tasks:
   ##Block start
@@ -23,7 +23,7 @@
         state: present
 
     - name: Enroll in the CIQ CLI using access key
-      ansible.builtin.shell: "ciq enroll --access-key {{ ciq_access_key }}"
+      ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
 	
     - name: Enable the subscription
       ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
