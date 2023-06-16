@@ -13,7 +13,7 @@
   tasks:
   ##Block start
   - name: LTS block runs when an LTS version is defined in inventory for a host
-    when: hostvars.[inventory_hostname].lts_version is defined
+    when: hostvars[inventory_hostname].lts_version is defined
     block:
 
     - name: Install required packages
