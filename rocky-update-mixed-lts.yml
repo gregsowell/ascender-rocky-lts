@@ -9,7 +9,7 @@
     # This is the access key created in mountain to authenticate the subscription
     # This key should be maintained securely in a vault or securely within Ascender
     mtn_access_key: xzy123
-	
+
   tasks:
   ##Block start
   - name: LTS block runs when an LTS version is defined in inventory for a host
