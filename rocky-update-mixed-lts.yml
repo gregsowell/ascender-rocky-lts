@@ -11,6 +11,14 @@
     mtn_access_key: xzy123
 
   tasks:
+  - name: Collect what version of linux is currently running
+    ansible.builtin.shell: cat /etc/os-release | grep PRETTY_NAME
+    register: os_version_before
+    
+  - name: Display the os_version for each server
+    ansible.builtin.debug:
+      var: os_version_before
+      
   ##Block start
   - name: LTS block runs when an LTS version is defined in inventory for a host
     when: hostvars[inventory_hostname].lts_version is defined
@@ -40,3 +48,11 @@
     ansible.builtin.dnf:
       name: "*"
       state: latest
+
+  - name: Collect what version of linux is currently running
+    ansible.builtin.shell: cat /etc/os-release | grep PRETTY_NAME
+    register: os_version_after
+    
+  - name: Display the os_version for each server
+    ansible.builtin.debug:
+      var: os_version_after
