@@ -23,10 +23,10 @@
         state: present
 
     - name: Enroll in the CIQ CLI using access key
-      ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
+      ansible.builtin.shell: ciq enroll --access-key {{ mtn_access_key }}
 	
     - name: Enable the subscription
-      ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
+      ansible.builtin.shell: ciq enable --key {{ lts_version }}
   ##Block stop
   
   - name: Update all packages on the system
