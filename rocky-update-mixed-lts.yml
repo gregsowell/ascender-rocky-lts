@@ -42,7 +42,7 @@
     - name: Install required packages
       ansible.builtin.dnf:
         name:
-          - "https://repo.ciq.co/public/ciq-public-release.rpm"
+          - "https://repository.ciq.com/ciq-public-release.rpm"
         disable_gpg_check: true
         state: present
 
