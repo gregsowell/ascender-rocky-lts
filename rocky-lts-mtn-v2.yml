@@ -34,7 +34,7 @@
     register: ciq_version
 
   ##Block start - remove old ciq binary if too old
-  - name: Block to install CIQ binary and setup keys
+  - name: Block to remove old binary and repo
     when: ciq_version is defined and ciq_version is version(req_ciq_version, '<')
     block:
     - name: Remove ciq binary
@@ -51,7 +51,7 @@
   ##Block stop - remove old ciq binary if too old
       
   ##Block start - install new ciq binary
-  - name: LTS block runs when an LTS version is defined in inventory for a host and it's not already configured
+  - name: Block to install new repo/binary and add keys
     when: presence.changed is false or (ciq_version is defined and ciq_version is version(req_ciq_version, '<'))
     block:
 
