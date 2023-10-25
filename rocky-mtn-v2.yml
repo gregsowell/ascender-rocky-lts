@@ -49,6 +49,7 @@
         name:
           - ciq
         state: absent
+      ignore_errors: true
 
     - name: Remove old repos
       ansible.builtin.dnf:
