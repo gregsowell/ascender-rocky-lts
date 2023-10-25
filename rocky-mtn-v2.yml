@@ -1,36 +1,41 @@
 ---
-- name: Perform package update with LTS support
-  hosts: lts_demo
+- name: Perform mountain updates
+  hosts: mtn-hosts
   gather_facts: false
   vars:
     # This is the version that the CIQ binary should at a minimum be at
-    req_ciq_version: .0.0.2
+    req_ciq_version: 1.0.1
   
-    # This is the lts version you are locking to
-    lts_version: lts-8.6
+#    # This is the lts version you are locking to
+#    lts_version: lts-8.6
 
     # This is the access key created in mountain to authenticate the subscription
     # This key should be maintained securely in a vault or securely within Ascender
     mtn_access_key: xzy123
 
-    ciq_cfg_path: /etc/ciq.cfg
+    #files to be manually deleted
+    remove_files: 
+      - /etc/yum.repos.d/ciq.repo
+      - /etc/ciq.cfg
+
+#    ciq_cfg_path: /etc/ciq.cfg
 
   tasks:
-  - name: Search to see if LTS is already configured
-    when: hostvars[inventory_hostname].lts_version is defined
-    ansible.builtin.lineinfile:
-      path: "{{ ciq_cfg_path }}"
-      #line: "{{ lts_version }}"
-      regexp: ".*{{ lts_version }}.*"
-      #state: present
-      state: absent
-    check_mode: yes
-    register: presence
-#    failed_when: presence is changed
+#  - name: Search to see if LTS is already configured
+#    when: hostvars[inventory_hostname].lts_version is defined
+#    ansible.builtin.lineinfile:
+#      path: "{{ ciq_cfg_path }}"
+#      #line: "{{ lts_version }}"
+#      regexp: ".*{{ lts_version }}.*"
+#      #state: present
+#      state: absent
+#    check_mode: yes
+#    register: presence
+##    failed_when: presence is changed
 
   - name: Check which version of ciq binary is present
     when: presence.changed is true
-    ansible.builtin.shell: ciq -v | awk '{print $3 }'
+    ansible.builtin.shell: ciq -v | awk '{print $3 }' | sed 's/^v//' | cut -d'-' -f1
     register: ciq_version
 
   ##Block start - remove old ciq binary if too old
@@ -48,6 +53,15 @@
         name:
           - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
+    - name: note enabled CIQ resources
+      ******************************
+    
+    - name: Remove files manually
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+      loop: "{{ remove_files }}"
+
   ##Block stop - remove old ciq binary if too old
       
   ##Block start - install new ciq binary
@@ -69,10 +83,11 @@
         state: present
 
     - name: Enroll in the CIQ CLI using access key
-      ansible.builtin.shell: "ciq enroll --access-key {{ mtn_access_key }}"
+      ansible.builtin.shell: "ciq enroll {{ mtn_access_key }}"
 
     - name: Enable the subscription
-      ansible.builtin.shell: "ciq enable --key {{ lts_version }}"
+      ansible.builtin.shell: "ciq dnf enable {{ item }}"
+      loop: "{{ enable_products }}"
   ##Block stop - install new ciq binary
 
 #  - name: Update all packages on the system
