@@ -4,6 +4,7 @@
   gather_facts: false
   vars:
     # This is the version that the CIQ binary should at a minimum be at
+    # This must be in quotes as it compares strings
     req_ciq_version: "1.0.1"
   
     # This is the access key created in mountain to authenticate the subscription
@@ -20,7 +21,6 @@
 
   tasks:
   - name: Check which version of ciq binary is present
-#    when: presence.changed is true
     ansible.builtin.shell: ciq -v | awk '{print $3 }' | sed 's/^v//' | cut -d'-' -f1
     register: ciq_version
 
@@ -31,38 +31,20 @@
   - name: make backup of repo file
     ansible.builtin.shell: "cat {{ repo_file }} > {{ repo_file }}.old"
 
-  - name: copy repo file to local for parsing
+  - name: copy repo file to local ansible executor for parsing.  Saves to playbookdir/hostname/fullOrigPathToFile
     ansible.builtin.fetch:
       src: "{{ repo_file }}"
-      #dest: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
       dest: "{{ playbook_dir }}"
-      #flat: true
 
-#  - name: debug test
-#    ansible.builtin.debug:
-#      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }}" # - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
 
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
-    #when: ciq_version.stdout is defined and ciq_version.stdout | int is version(req_ciq_version, '<')
-    #when: ciq_version.stdout is defined and ciq_version.stdout | int < req_ciq_version | int
-    #when: ciq_version.stdout is defined and ciq_version.stdout | version(req_ciq_version, '<')
-    #when: ciq_version.stdout is defined and (ciq_version.stdout | int < req_ciq_version | int)
-    #when: ciq_version.stdout is defined and (ciq_version.stdout | version(req_ciq_version,'<'))
     when: ciq_version.stdout is defined and ciq_version.stdout is version(req_ciq_version, '<')
     block:
-#    - name: Remove ciq binary
-#      ansible.builtin.dnf:
-#        name:
-#          - ciq
-#        state: absent
-#      ignore_errors: true
-
-    - name: Remove old repos
+    - name: Remove old binary and release
       ansible.builtin.dnf:
         name:
           - ciq-public-release
-#          - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
       ignore_errors: true
     
@@ -76,7 +58,6 @@
       
   ##Block start - install new ciq binary
   - name: Block to install new repo/binary and add keys
-#    when: (ciq_version is defined and ciq_version is version(req_ciq_version, '<'))
     block:
 
     - name: Install ciq repos
@@ -95,13 +76,11 @@
     - name: Enroll in the CIQ CLI using access key
       ansible.builtin.shell: "ciq enroll {{ mtn_access_key }}"
 
-    - name: file directory build
+    - name: file directory build.  This is used to lookup the ciq.repo files from each server for use in next task.
       ansible.builtin.set_fact:
-        #old_repo_file: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
         old_repo_file: "{{ playbook_dir }}/{{ inventory_hostname }}/{{ repo_file }}"
 
-    - name: Enable the subscription
-      #when: lookup('ansible.builtin.ini', 'enabled', section=item, file='/etc/yum.repos.d/ciq.repo.old') == "1"
+    - name: Enable the subscription by looping through old repo and enabeling things that were previously enabled
       when: lookup('ansible.builtin.ini', 'enabled', section=item, file=old_repo_file) == "1"
       ansible.builtin.shell: "ciq dnf enable {{ item }}"
       loop: "{{ section_list.stdout_lines }}"
