@@ -1,0 +1,61 @@
+[internal-8-tools]
+name=CIQ Internal Packages for Rocky Linux 8 - tools
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/internal-8/tools/$arch
+sslverify=1
+gpgcheck=1
+enabled=1
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
+
+[internal-8-tools-debug]
+name=CIQ Internal Packages for Rocky Linux 8 - tools
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/internal-8/tools/$arch-debug
+sslverify=1
+gpgcheck=1
+enabled=0
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
+
+[internal-8-tools-source]
+name=CIQ Internal Packages for Rocky Linux 8 - tools
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/internal-8/tools/src
+sslverify=1
+gpgcheck=1
+enabled=0
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
+
+
+
+[kernel-9-hashed-ciq-kernels-r9]
+name=Kernels for rocky 9 - hashed-ciq-kernels-r9
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/kernel-9/hashed-ciq-kernels-r9/$arch
+sslverify=1
+gpgcheck=1
+enabled=1
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
+
+[kernel-9-hashed-ciq-kernels-r9-debug]
+name=Kernels for rocky 9 - hashed-ciq-kernels-r9
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/kernel-9/hashed-ciq-kernels-r9/$arch-debug
+sslverify=1
+gpgcheck=1
+enabled=0
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
+
+[kernel-9-hashed-ciq-kernels-r9-source]
+name=Kernels for rocky 9 - hashed-ciq-kernels-r9
+baseurl=https://repo.ciq.com/v1/1c/subscriptions/kernel-9/hashed-ciq-kernels-r9/src
+sslverify=1
+gpgcheck=1
+enabled=0
+priority=1
+metadata_expire=43200
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ciq-signing-key-v2
