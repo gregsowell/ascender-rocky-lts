@@ -31,9 +31,9 @@
   - name: make backup of repo file
     ansible.builtin.shell: "cat {{ repo_file }} > {{ repo_file }}.old"
 
-  - name: debug test
-    ansible.builtin.debug:
-      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }}" # - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
+#  - name: debug test
+#    ansible.builtin.debug:
+#      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }}" # - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
 
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
@@ -53,7 +53,8 @@
     - name: Remove old repos
       ansible.builtin.dnf:
         name:
-          - "https://repo.ciq.co/public/ciq-public-release.rpm"
+          - ciq-public-release
+#          - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
     
     - name: Remove files manually
