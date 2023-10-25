@@ -20,7 +20,7 @@
 
   tasks:
   - name: Check which version of ciq binary is present
-    when: presence.changed is true
+#    when: presence.changed is true
     ansible.builtin.shell: ciq -v | awk '{print $3 }' | sed 's/^v//' | cut -d'-' -f1
     register: ciq_version
 
