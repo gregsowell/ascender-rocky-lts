@@ -35,6 +35,7 @@
     ansible.builtin.fetch:
       src: "{{ repo_file }}"
       dest: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
+      flat: true
 
 #  - name: debug test
 #    ansible.builtin.debug:
