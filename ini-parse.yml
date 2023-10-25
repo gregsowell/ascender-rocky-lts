@@ -1,0 +1,9 @@
+---
+- name: quick ini file parse test
+  hosts: localhost
+  gather_facts: false
+  vars:
+  tasks:
+  - name: debug
+    ansible.builtin.debug:
+      msg: "{{ lookup('ansible.builtin.ini', 'enabled', section='internal-8-tools', file='users.ini') }}"
