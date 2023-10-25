@@ -37,7 +37,7 @@
     #when: ciq_version.stdout is defined and ciq_version.stdout | int < req_ciq_version | int
     #when: ciq_version.stdout is defined and ciq_version.stdout | version(req_ciq_version, '<')
     #when: ciq_version.stdout is defined and (ciq_version.stdout | int < req_ciq_version | int)
-    when: ciq_version.stdout is defined and (ciq_version.stdout | version_compare('<', req_ciq_version))
+    when: ciq_version.stdout is defined and (ciq_version.stdout | version_compare(req_ciq_version,'<'))
     block:
     - name: Remove ciq binary
       ansible.builtin.dnf:
