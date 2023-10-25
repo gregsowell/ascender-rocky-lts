@@ -44,18 +44,18 @@
     #when: ciq_version.stdout is defined and (ciq_version.stdout | version(req_ciq_version,'<'))
     when: ciq_version.stdout is defined and ciq_version.stdout is version(req_ciq_version, '<')
     block:
-    - name: Remove ciq binary
-      ansible.builtin.dnf:
-        name:
-          - ciq
-        state: absent
-      ignore_errors: true
+#    - name: Remove ciq binary
+#      ansible.builtin.dnf:
+#        name:
+#          - ciq
+#        state: absent
+#      ignore_errors: true
 
     - name: Remove old repos
       ansible.builtin.dnf:
         name:
           - ciq-public-release
-          - "https://repo.ciq.co/public/ciq-public-release.rpm"
+#          - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
       ignore_errors: true
     
