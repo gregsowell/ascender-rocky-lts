@@ -31,6 +31,10 @@
   - name: make backup of repo file
     ansible.builtin.shell: "cat {{ repo_file }} > {{ repo_file }}.old"
 
+  - name: debug test
+    ansible.builtin.debug:
+      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }} - {{ ciq_version.stdout | version(req_ciq_version,'<') }}"
+
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
     #when: ciq_version.stdout is defined and ciq_version.stdout | int is version(req_ciq_version, '<')
