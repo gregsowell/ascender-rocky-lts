@@ -34,8 +34,9 @@
   - name: copy repo file to local for parsing
     ansible.builtin.fetch:
       src: "{{ repo_file }}"
-      dest: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
-      flat: true
+      #dest: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
+      dest: "{{ playbook_dir }}"
+      #flat: true
 
 #  - name: debug test
 #    ansible.builtin.debug:
@@ -96,7 +97,8 @@
 
     - name: file directory build
       ansible.builtin.set_fact:
-        old_repo_file: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
+        #old_repo_file: "{{ playbook_dir }}/{{ inventory_hostname }}.repo"
+        old_repo_file: "{{ playbook_dir }}/{{ inventory_hostname }}/{{ repo_file }}"
 
     - name: Enable the subscription
       #when: lookup('ansible.builtin.ini', 'enabled', section=item, file='/etc/yum.repos.d/ciq.repo.old') == "1"
