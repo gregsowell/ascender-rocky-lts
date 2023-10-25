@@ -4,7 +4,7 @@
   gather_facts: false
   vars:
     # This is the version that the CIQ binary should at a minimum be at
-    req_ciq_version: 1.0.1
+    req_ciq_version: "1.0.1"
   
     # This is the access key created in mountain to authenticate the subscription
     # This key should be maintained securely in a vault or securely within Ascender
@@ -33,7 +33,7 @@
 
   - name: debug test
     ansible.builtin.debug:
-      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }} - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
+      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }}" # - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
 
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
