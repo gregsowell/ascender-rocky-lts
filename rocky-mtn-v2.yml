@@ -1,6 +1,6 @@
 ---
 - name: Perform mountain V2 migration
-  hosts: mtn-hosts
+  hosts: greg-rocky86lts
   gather_facts: false
   vars:
     # This is the version that the CIQ binary should at a minimum be at
