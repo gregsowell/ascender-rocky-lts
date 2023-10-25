@@ -55,8 +55,9 @@
       ansible.builtin.dnf:
         name:
           - ciq-public-release
-#          - "https://repo.ciq.co/public/ciq-public-release.rpm"
+          - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
+      ignore_errors: true
     
     - name: Remove files manually
       ansible.builtin.file:
