@@ -1,5 +1,5 @@
 ---
-- name: Perform mountain updates
+- name: Perform mountain V2 migration
   hosts: mtn-hosts
   gather_facts: false
   vars:
