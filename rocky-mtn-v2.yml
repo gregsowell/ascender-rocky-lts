@@ -6,9 +6,6 @@
     # This is the version that the CIQ binary should at a minimum be at
     req_ciq_version: 1.0.1
   
-#    # This is the lts version you are locking to
-#    lts_version: lts-8.6
-
     # This is the access key created in mountain to authenticate the subscription
     # This key should be maintained securely in a vault or securely within Ascender
     mtn_access_key: xzy123
@@ -18,25 +15,21 @@
       - /etc/yum.repos.d/ciq.repo
       - /etc/ciq.cfg
 
-#    ciq_cfg_path: /etc/ciq.cfg
+    # repo file for parsing to reenable packages
+    repo_file: /etc/yum.repos.d/ciq.repo
 
   tasks:
-#  - name: Search to see if LTS is already configured
-#    when: hostvars[inventory_hostname].lts_version is defined
-#    ansible.builtin.lineinfile:
-#      path: "{{ ciq_cfg_path }}"
-#      #line: "{{ lts_version }}"
-#      regexp: ".*{{ lts_version }}.*"
-#      #state: present
-#      state: absent
-#    check_mode: yes
-#    register: presence
-##    failed_when: presence is changed
-
   - name: Check which version of ciq binary is present
     when: presence.changed is true
     ansible.builtin.shell: ciq -v | awk '{print $3 }' | sed 's/^v//' | cut -d'-' -f1
     register: ciq_version
+
+  - name: find all of the repo sections from the repo file
+    ansible.builtin.shell: "cat {{ repo_file }} | grep -o '\\[.*\\]' | tr -d '[]'"
+    register: section_list
+
+  - name: make backup of repo file
+    ansible.builtin.shell: "cat {{ repo_file }} > {{ repo_file }}.old"
 
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
@@ -53,8 +46,6 @@
         name:
           - "https://repo.ciq.co/public/ciq-public-release.rpm"
         state: absent
-    - name: note enabled CIQ resources
-      ******************************
     
     - name: Remove files manually
       ansible.builtin.file:
@@ -66,7 +57,7 @@
       
   ##Block start - install new ciq binary
   - name: Block to install new repo/binary and add keys
-    when: presence.changed is false or (ciq_version is defined and ciq_version is version(req_ciq_version, '<'))
+#    when: (ciq_version is defined and ciq_version is version(req_ciq_version, '<'))
     block:
 
     - name: Install ciq repos
@@ -80,14 +71,15 @@
       ansible.builtin.dnf:
         name:
           - ciq
-        state: present
+        state: latest
 
     - name: Enroll in the CIQ CLI using access key
       ansible.builtin.shell: "ciq enroll {{ mtn_access_key }}"
 
     - name: Enable the subscription
+      when: lookup('ansible.builtin.ini', 'enabled', section=item, file='/etc/yum.repos.d/ciq.repo.old') == "1"
       ansible.builtin.shell: "ciq dnf enable {{ item }}"
-      loop: "{{ enable_products }}"
+      loop: "{{ section_list.stdout_lines }}"
   ##Block stop - install new ciq binary
 
 #  - name: Update all packages on the system
