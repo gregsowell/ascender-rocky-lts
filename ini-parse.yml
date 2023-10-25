@@ -5,7 +5,7 @@
   vars:
   tasks:
   - name: find all of the repo sections
-    ansible.builtin.shell: cat ciq.repo | grep -o '\[.*\]' | tr -d '[]'
+    ansible.builtin.shell: "cat ciq.repo | grep -o '\[.*\]' | tr -d '[]'"
     register: section_list
 
   - name: debug section_list
