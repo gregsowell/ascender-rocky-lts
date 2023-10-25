@@ -9,7 +9,8 @@
     register: section_list
 
   - name: debug section_list
-    var: section_list
+    ansible.builtin.debug:
+      var: section_list
 
 
   - name: debug
