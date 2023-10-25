@@ -33,7 +33,7 @@
 
   - name: debug test
     ansible.builtin.debug:
-      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }} - {{ ciq_version.stdout | version(req_ciq_version,'<') }}"
+      msg: "{{ ciq_version.stdout }} {{ req_ciq_version }} - {{ ciq_version.stdout | ansible.builtin.version(req_ciq_version,'<') }}"
 
   ##Block start - remove old ciq binary if too old
   - name: Block to remove old binary and repo
