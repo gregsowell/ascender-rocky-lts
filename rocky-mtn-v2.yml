@@ -5,7 +5,7 @@
   vars:
     # This is the version that the CIQ binary should at a minimum be at
     # This must be in quotes as it compares strings
-    req_ciq_version: "1.0.1"
+    req_ciq_version: "1.0.3"
   
     # This is the access key created in mountain to authenticate the subscription
     # This key should be maintained securely in a vault or securely within Ascender
@@ -70,7 +70,7 @@
     - name: Install ciq binary
       ansible.builtin.dnf:
         name:
-          - ciq
+          - mtn
         state: latest
 
     - name: Enroll in the CIQ CLI using access key
