@@ -74,7 +74,7 @@
         state: latest
 
     - name: Enroll in the CIQ CLI using access key
-      ansible.builtin.shell: "ciq enroll {{ mtn_access_key }}"
+      ansible.builtin.shell: "mtn enroll {{ mtn_access_key }}"
 
     - name: file directory build.  This is used to lookup the ciq.repo files from each server for use in next task.
       ansible.builtin.set_fact:
@@ -82,7 +82,7 @@
 
     - name: Enable the subscription by looping through old repo and enabeling things that were previously enabled
       when: lookup('ansible.builtin.ini', 'enabled', section=item, file=old_repo_file) == "1"
-      ansible.builtin.shell: "ciq dnf enable {{ item }}"
+      ansible.builtin.shell: "mtn dnf enable {{ item }}"
       loop: "{{ section_list.stdout_lines }}"
   ##Block stop - install new ciq binary
 
