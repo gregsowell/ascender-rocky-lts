@@ -49,7 +49,7 @@
     - name: Install required packages
       ansible.builtin.dnf:
         name:
-          - ciq
+          - mtn
         state: present
 
     - name: Enroll in the CIQ CLI using access key
